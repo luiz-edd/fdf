@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:54:00 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/22 17:13:03 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/23 11:22:33 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,18 @@ int	main(void)
 		i++;
 		printf("\n");
 	}
+	// i = 0;
+	// int j = 0;
+	// int height = data->height;
+	// int width = data->width;
+	// while (i < height)
+	// {
+	// 	free(data->z_matrix[i++]);
+	// 	while()
+	// }
+	// free(data->z_matrix);
+	// free(data);
+	
 }
 
 //test GNL
