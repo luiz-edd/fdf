@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:10:36 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/23 14:24:54 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/23 14:45:41 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,21 @@ void	draw(float x, float x1, float y, float y1) // [1,2] [3, 8]
 	float x_step;
 	float y_step;
 	int max;
+	mlx_t *mlx;
+	mlx_image_t *img;
 
-	x_step = (x - x1); // -2
-	y_step = (y - y1); // -6
+	x_step = (x - x1);                        // -2
+	y_step = (y - y1);                        // -6
 	max = maxval(sign(x_step), sign(y_step)); // 6
-	
-	x_step /= max; // -2/6 = -0.33
-	y_step /= max; // -6/6 = -1;
+
+	x_step /= max;                         // -2/6 = -0.33
+	y_step /= max;                         // -6/6 = -1;
 	while ((int)(x - x1) || (int)(y - y1)) //try with &&
 	{
-		mlx_
+		img = mlx_new_image(mlx, 256, 256);
+		if (!img || (mlx_image_to_window(mlx, img, 0, 0) < 0))
+			ft_error();
+		mlx_put_pixel(img, x, y, 0xffffff);
 		x += x_step;
 		y += y_step;
 	}

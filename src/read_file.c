@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:43:34 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/22 17:41:19 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/23 17:24:01 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	get_width(char *file_name)
 	fd = open(file_name, O_RDONLY);
 	line = get_next_line(fd);
 	width = ft_wordcount(line, ' ');
+	
 	free(line);
 	close(fd);
 	return (width);
