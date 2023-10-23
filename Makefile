@@ -2,7 +2,8 @@ NAME = fdf
 CC = cc -Wall -Wextra -Werror -g3 -Wunreachable-code -Ofast
 LIBMLX = ./lib/MLX42
 
-HEADER = -I libft/libft.a -I $(LIBMLX)/include
+HEADER = -I libft
+LIBFT = libft/libft.a
 LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -l 
 
 PATH_TO_SRC = src/
@@ -17,15 +18,15 @@ OBJ_PATH = $(addprefix $(PATH_TO_OBJ), $(OBJ))
 all: $(NAME)
 
 $(NAME): $(OBJ_PATH)
-	$(CC) $(OBJ_PATH) $(LIBS) $(HEADER) -o $(NAME)
+	$(CC) $(OBJ_PATH) $(LIBFT) $(HEADER) -o $(NAME)
 
 $(PATH_TO_OBJ)%.o: $(PATH_TO_SRC)%.c
-	mkdir obj
+	mkdir -p obj
 	make -C libft/ all	
-	$(CC) $< -o $@ -c $(HEADER)
+	$(CC) $< -o $@ -c $(HEADER) 
 
 clean:
-	@rm -rf $(OBJ_PATH)
+	@rm -rf obj
 	@rm -rf $(LIBMLX)/build
 	@make -C libft/ clean
 
@@ -33,5 +34,6 @@ fclean: clean
 	@rm -rf $(NAME)
 	@make -C libft/ fclean
 
-re:
-	fclean all
+re: fclean all
+
+.PHONY: all clean fclean re

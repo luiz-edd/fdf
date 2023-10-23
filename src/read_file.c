@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:43:34 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/23 17:24:01 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/23 19:12:51 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,21 @@ int	get_width(char *file_name)
 	int		fd;
 	int		width;
 	char	*line;
+	char	**words;
+	int		i;
 
-	fd = 0;
+	i = 0;
+	width = 0;
 	fd = open(file_name, O_RDONLY);
 	line = get_next_line(fd);
-	width = ft_wordcount(line, ' ');
-	
+	words = ft_split(line, ' ');
+	while (*words != NULL)
+	{
+		if(words[i][0] != '\n')
+			width++;
+		words++;
+	}
+	ft_freepp(words);
 	free(line);
 	close(fd);
 	return (width);
