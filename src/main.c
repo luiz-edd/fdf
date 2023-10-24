@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:54:00 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/24 12:32:25 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/24 15:58:09 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <unistd.h>
-#define WIDTH 256
-#define HEIGHT 256
 
 int	print_map_free(fdf *data)
 {
 	int	i;
 	int	j;
 
-	if (!read_file("test_maps/test.fdf", data))
+	if (!read_file("test_maps/elem-col.fdf", data))
 	{
 		free(data);
 		return (2);
@@ -52,5 +50,15 @@ int	main(void)
 	data = (fdf *)malloc(sizeof(fdf));
 	if (data == NULL)
 		return (2);
-	print_map_free(data);
+	data->mlx = mlx_init(WIDTH, HEIGHT, "fdf", true);
+	if (!data->mlx)
+		return (0); // ft_error();
+	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	if (!data->image || (mlx_image_to_window(data->mlx, data->image, 0, 0) < 0))
+		return (0); // ft_error();
+	// print_map_free(data);
+	bresenham(100, 200, 10, 100, data);
+	// mlx_loop_hook(data->mlx, , data->mlx);
+	mlx_loop(data->mlx);
+	mlx_terminate(data->mlx);
 }

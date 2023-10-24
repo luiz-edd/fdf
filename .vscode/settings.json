@@ -5,6 +5,7 @@
 		"unistd.h": "c",
 		"get_next_line.h": "c",
 		"libft.h": "c",
-		"stdio.h": "c"
+		"stdio.h": "c",
+		"mlx42.h": "c"
 	}
 }

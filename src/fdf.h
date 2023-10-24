@@ -1,23 +1,28 @@
 #ifndef FDF_H
 # define FDF_H
 
-# include "../libft/libft.h"
+# include "../lib/libft/src/libft.h"
+# include "MLX42/MLX42.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <unistd.h>
-# define WIDTH 256
-# define HEIGHT 256
+# define WIDTH 1000
+# define HEIGHT 1000
 
 typedef struct s_fdf
 {
-	int	width;
-	int	height;
-	int	**z_matrix;
+	int			width;
+	int			height;
+	int			**z_matrix;
 
-}		fdf;
+	mlx_t		*mlx;
+	mlx_image_t	*image;
+
+}				fdf;
 
 //prototypes
-int		read_file(char *file_name, fdf *data);
+int				read_file(char *file_name, fdf *data);
+void			bresenham(float x, float x1, float y, float y1, fdf *data);
 
 // typedef struct mlx
 // {
