@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:43:34 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/23 19:12:51 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/24 10:01:42 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,17 @@ int	get_width(char *file_name)
 	char	**words;
 	int		i;
 
+	// int		j;
 	i = 0;
+	// j = 0;
 	width = 0;
 	fd = open(file_name, O_RDONLY);
 	line = get_next_line(fd);
 	words = ft_split(line, ' ');
-	while (*words != NULL)
+	while (words[i] != NULL)
 	{
-		if(words[i][0] != '\n')
+		if (words[i++][0] != '\n')
 			width++;
-		words++;
 	}
 	ft_freepp(words);
 	free(line);
@@ -67,10 +68,9 @@ void	fill_matrix_line(char *line, int *arr, int width)
 	while (i < width)
 	{
 		arr[i] = ft_atoi(nums[i]);
-		free(nums[i]);
 		i++;
 	}
-	free(nums);
+	ft_freepp(nums);
 }
 
 void	read_file(char *file_name, fdf *data)
@@ -88,7 +88,7 @@ void	read_file(char *file_name, fdf *data)
 	get_next_line(-1);
 
 	data->z_matrix = (int **)malloc(sizeof(int *) * data->height + 1);
-	while (i <= data->height)
+	while (i < data->height)
 		data->z_matrix[i++] = (int *)malloc(sizeof(int) * data->width);
 	i = 0;
 
