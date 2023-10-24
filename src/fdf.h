@@ -17,7 +17,7 @@ typedef struct s_fdf
 }		fdf;
 
 //prototypes
-void	read_file(char *file_name, fdf *data);
+int		read_file(char *file_name, fdf *data);
 
 // typedef struct mlx
 // {

@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:43:34 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/24 10:01:42 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/24 12:28:52 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,16 @@ int	get_height(char *file_name)
 	return (height);
 }
 
-int	get_width(char *file_name)
+int	get_width(char *line)
 {
-	int		fd;
-	int		width;
-	char	*line;
-	char	**words;
 	int		i;
+	int		width;
+	char	**words;
 
-	// int		j;
 	i = 0;
-	// j = 0;
 	width = 0;
-	fd = open(file_name, O_RDONLY);
-	line = get_next_line(fd);
+	if (line == NULL)
+		return (0);
 	words = ft_split(line, ' ');
 	while (words[i] != NULL)
 	{
@@ -53,9 +49,36 @@ int	get_width(char *file_name)
 			width++;
 	}
 	ft_freepp(words);
-	free(line);
-	close(fd);
 	return (width);
+}
+
+int	update_height_width(char *file_name, int *heigh, int *width)
+{
+	int		i;
+	int		fd;
+	char	*line;
+	int		aux_width;
+
+	i = 0;
+	fd = open(file_name, O_RDONLY);
+	line = get_next_line(fd);
+	*heigh = 0;
+	*width = 0;
+	aux_width = get_width(line);
+	while (line != NULL)
+	{
+		*heigh += 1;
+		*width = get_width(line);
+		free(line);
+		if (aux_width != *width)
+		{
+			get_next_line(-1);
+			printf("MAP ERROR\n");
+			return (0);
+		}
+		line = get_next_line(fd);
+	}
+	return (1);
 }
 
 void	fill_matrix_line(char *line, int *arr, int width)
@@ -73,25 +96,20 @@ void	fill_matrix_line(char *line, int *arr, int width)
 	ft_freepp(nums);
 }
 
-void	read_file(char *file_name, fdf *data)
+int	read_file(char *file_name, fdf *data)
 {
 	int i;
 	char *line;
 	int fd;
-	fd = 0;
-
 	i = 0;
 
-	data->height = get_height(file_name);
-	get_next_line(-1);
-	data->width = get_width(file_name);
-	get_next_line(-1);
+	if (!update_height_width(file_name, &data->height, &data->width))
+		return (0);
 
 	data->z_matrix = (int **)malloc(sizeof(int *) * data->height + 1);
 	while (i < data->height)
 		data->z_matrix[i++] = (int *)malloc(sizeof(int) * data->width);
 	i = 0;
-
 	fd = open(file_name, O_RDONLY);
 	line = get_next_line(fd);
 	while (line != NULL)
@@ -102,4 +120,5 @@ void	read_file(char *file_name, fdf *data)
 	}
 	close(fd);
 	data->z_matrix[i] = NULL;
+	return (1);
 }
