@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:54:00 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/25 15:06:17 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:46:58 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,19 @@ int	print_map(fdf *data)
 	{
 		j = 0;
 		while (j < data->width)
-			printf("%3d", data->z_matrix[i][j++]);
+		{
+			printf("%3d%d,", data->z_matrix[i][j], data->color_matrix[i][j]);
+			j++;
+		}
 		printf("\n");
-		i++;
-		// free(data->z_matrix[i++]);
+		free(data->z_matrix[i]);
+		free(data->color_matrix[i++]);
 	}
-	// free(data->z_matrix);
-	// free(data);
+	free(data->z_matrix);
+	free(data->color_matrix);
+	free(data);
 	return (0);
 }
-
-
 
 //print map and free
 int	main(void)
@@ -59,9 +61,8 @@ int	main(void)
 	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (!data->image || (mlx_image_to_window(data->mlx, data->image, 0, 0) < 0))
 		return (0); // ft_error();
-	// print_map_free(data);
 	read_file("test_maps/42.fdf", data);
-	data->zoom = 30;
+	data->zoom = 50;
 	draw(data);
 	// bresenham(10,10,600,300, data);
 	// mlx_loop_hook(data->mlx, , data->mlx);

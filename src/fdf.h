@@ -11,20 +11,22 @@
 
 typedef struct s_fdf
 {
-	int			width;
-	int			height;
-	int			**z_matrix;
-	int			zoom;
+	int				width;
+	int				height;
+	int				**z_matrix;
+	int				**color_matrix;
+	int				zoom;
+	unsigned int	color;
 
-	mlx_t		*mlx;
-	mlx_image_t	*image;
+	mlx_t			*mlx;
+	mlx_image_t		*image;
 
-}				fdf;
+}					fdf;
 
 //prototypes
-int				read_file(char *file_name, fdf *data);
-void			bresenham(float x, float x1, float y, float y1, fdf *data);
-void			draw(fdf *data);
+int					read_file(char *file_name, fdf *data);
+void				bresenham(float x, float x1, float y, float y1, fdf *data);
+void				draw(fdf *data);
 
 // typedef struct mlx
 // {

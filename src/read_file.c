@@ -6,31 +6,11 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:43:34 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/24 12:28:52 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:45:34 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-int	get_height(char *file_name)
-{
-	int		fd;
-	int		height;
-	char	*line;
-
-	fd = 0;
-	height = 0;
-	fd = open(file_name, O_RDONLY);
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		height++;
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
-	return (height);
-}
 
 int	get_width(char *line)
 {
@@ -81,7 +61,7 @@ int	update_height_width(char *file_name, int *heigh, int *width)
 	return (1);
 }
 
-void	fill_matrix_line(char *line, int *arr, int width)
+void	fill_matrix(char *line, int *z, int *color, int width)
 {
 	int		i;
 	char	**nums;
@@ -90,10 +70,41 @@ void	fill_matrix_line(char *line, int *arr, int width)
 	nums = ft_split(line, ' ');
 	while (i < width)
 	{
-		arr[i] = ft_atoi(nums[i]);
+		z[i] = ft_atoi(nums[i]);
+		color[i] = ft_atoi_base((ft_strchr(nums[i], 'x')) + 1, 16);
 		i++;
 	}
 	ft_freepp(nums);
+}
+
+// void	fill_matrix_color(char *line, int *arr, int width)
+// {
+// 	int		i;
+// 	char	**nums;
+
+// 	i = 0;
+// 	nums = ft_split(line, ' ');
+// 	while (i < width)
+// 	{
+// 		arr[i] = ft_strchr() ft_atoi(nums[i]);
+// 		i++;
+// 	}
+// 	ft_freepp(nums);
+// }
+
+void	create_matrix(fdf *data)
+{
+	int	i;
+
+	i = 0;
+	data->z_matrix = (int **)malloc(sizeof(int *) * data->height + 1);
+	data->color_matrix = (int **)malloc(sizeof(int *) * data->height + 1);
+	while (i < data->height)
+	{
+		data->z_matrix[i] = (int *)malloc(sizeof(int) * data->width);
+		data->color_matrix[i] = (int *)malloc(sizeof(int) * data->width);
+		i++;
+	}
 }
 
 int	read_file(char *file_name, fdf *data)
@@ -105,18 +116,17 @@ int	read_file(char *file_name, fdf *data)
 
 	if (!update_height_width(file_name, &data->height, &data->width))
 		return (0);
-
-	data->z_matrix = (int **)malloc(sizeof(int *) * data->height + 1);
-	while (i < data->height)
-		data->z_matrix[i++] = (int *)malloc(sizeof(int) * data->width);
+	create_matrix(data);
 	i = 0;
 	fd = open(file_name, O_RDONLY);
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		fill_matrix_line(line, data->z_matrix[i++], data->width);
+		fill_matrix(line, data->z_matrix[i], data->color_matrix[i],
+				data->width);
 		free(line);
 		line = get_next_line(fd);
+		i++;
 	}
 	close(fd);
 	data->z_matrix[i] = NULL;
