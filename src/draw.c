@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:10:36 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/24 15:51:23 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/25 14:52:40 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,53 @@ float	sign(float a)
 	return (a);
 }
 
-void	bresenham(float x, float y, float x1, float y1, fdf *data) // [3,5] [6, 10]
+void	get_zoom(float *x, float *y, float *x1, float *y1, fdf *data)
 {
-	float x_step;
-	float y_step;
-	int max;
+	*x *= data->zoom;
+	*y *= data->zoom;
+	*x1 *= data->zoom;
+	*y1 *= data->zoom;
+}
+// [3,5] [6,10]
 
+void	bresenham(float x, float y, float x1, float y1, fdf *data)
+{
+	float	x_step;
+	float	y_step;
+	int		max;
+
+	get_zoom(&x, &y, &x1, &y1, data);
 	x_step = (x1 - x);                        // 3
 	y_step = (y1 - y);                        // 5
 	max = maxval(sign(x_step), sign(y_step)); // 5
-
-	x_step /= max; // 
-	y_step /= max; // -6/6 = -1;
+	x_step /= max;                            //
+	y_step /= max;                            // -6/6 = -1;
 	while ((int)(x - x1) || (int)(y - y1))
 	{
 		mlx_put_pixel(data->image, x, y, 0xffffffff);
 		x += x_step;
 		y += y_step;
+	}
+}
+
+void	draw(fdf *data)
+{
+	float y;
+	float x;
+
+	y = 0;
+	x = 0;
+	while (y < data->height)
+	{
+		x = 0;
+		while (x < data->width)
+		{
+			if (x < data->width - 1)
+				bresenham(x, y, x + 1, y, data);
+			if (y < data->height - 1)
+				bresenham(x, y, x, y + 1, data);
+			x++;
+		}
+		y++;
 	}
 }
