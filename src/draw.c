@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:10:36 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/25 15:24:04 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/25 18:57:47 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	get_zoom(float *x, float *y, float *x1, float *y1, fdf *data)
 }
 // [3,5] [6,10]
 
-void	bresenham(float x, float y, float x1, float y1, fdf *data)
+void	bresenham(float x, float y, float x1, float y1, fdf *data, int color)
 {
 	float	x_step;
 	float	y_step;
@@ -49,7 +49,7 @@ void	bresenham(float x, float y, float x1, float y1, fdf *data)
 	y_step /= max;                            // -6/6 = -1;
 	while ((int)(x - x1) || (int)(y - y1))
 	{
-		mlx_put_pixel(data->image, x, y, 0xffffffff);
+		mlx_put_pixel(data->image, x, y, color);
 		x += x_step;
 		y += y_step;
 	}
@@ -57,8 +57,8 @@ void	bresenham(float x, float y, float x1, float y1, fdf *data)
 
 void	draw(fdf *data)
 {
-	float y;
-	float x;
+	int y;
+	int x;
 
 	y = 0;
 	x = 0;
@@ -67,10 +67,12 @@ void	draw(fdf *data)
 		x = 0;
 		while (x < data->width)
 		{
+			if (data->color_matrix[y][x] == 0)
+				data->color_matrix[y][x] = 4294967295;
 			if (x < data->width - 1)
-				bresenham(x, y, x + 1, y, data);
+				bresenham(x, y, x + 1, y, data, data->color_matrix[y][x]);
 			if (y < data->height - 1)
-				bresenham(x, y, x, y + 1, data);
+				bresenham(x, y, x, y + 1, data, data->color_matrix[y][x]);
 			x++;
 		}
 		y++;

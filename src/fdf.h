@@ -14,7 +14,7 @@ typedef struct s_fdf
 	int				width;
 	int				height;
 	int				**z_matrix;
-	int				**color_matrix;
+	unsigned int				**color_matrix;
 	int				zoom;
 	unsigned int	color;
 
@@ -25,7 +25,8 @@ typedef struct s_fdf
 
 //prototypes
 int					read_file(char *file_name, fdf *data);
-void				bresenham(float x, float x1, float y, float y1, fdf *data);
+void				bresenham(float x, float y, float x1, float y1, fdf *data,
+						int color);
 void				draw(fdf *data);
 
 // typedef struct mlx

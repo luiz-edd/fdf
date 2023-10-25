@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:43:34 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/25 17:45:34 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/25 18:27:45 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,18 @@ int	update_height_width(char *file_name, int *heigh, int *width)
 
 void	fill_matrix(char *line, int *z, int *color, int width)
 {
-	int		i;
-	char	**nums;
+	int				i;
+	char			**nums;
+	unsigned int	color_hex;
 
 	i = 0;
 	nums = ft_split(line, ' ');
 	while (i < width)
-	{
+	{	color_hex = 0;
 		z[i] = ft_atoi(nums[i]);
-		color[i] = ft_atoi_base((ft_strchr(nums[i], 'x')) + 1, 16);
+		if ((ft_strchr(nums[i], 'x')) != NULL)
+			color_hex = ft_atoi_base(ft_strchr(nums[i], 'x') + 1, 16);
+		color[i] = color_hex;
 		i++;
 	}
 	ft_freepp(nums);
