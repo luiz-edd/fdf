@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:43:34 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/25 18:27:45 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/26 13:23:37 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	update_height_width(char *file_name, int *heigh, int *width)
 	return (1);
 }
 
-void	fill_matrix(char *line, int *z, int *color, int width)
+void	fill_matrix(char *line, int *z, unsigned int *color, int width)
 {
 	int				i;
 	char			**nums;
@@ -70,7 +70,7 @@ void	fill_matrix(char *line, int *z, int *color, int width)
 	i = 0;
 	nums = ft_split(line, ' ');
 	while (i < width)
-	{	color_hex = 0;
+	{	color_hex = 0xffffffff;
 		z[i] = ft_atoi(nums[i]);
 		if ((ft_strchr(nums[i], 'x')) != NULL)
 			color_hex = ft_atoi_base(ft_strchr(nums[i], 'x') + 1, 16);
@@ -101,11 +101,11 @@ void	create_matrix(fdf *data)
 
 	i = 0;
 	data->z_matrix = (int **)malloc(sizeof(int *) * data->height + 1);
-	data->color_matrix = (int **)malloc(sizeof(int *) * data->height + 1);
+	data->color_matrix = (unsigned int **)malloc(sizeof(unsigned int *) * data->height + 1);
 	while (i < data->height)
 	{
 		data->z_matrix[i] = (int *)malloc(sizeof(int) * data->width);
-		data->color_matrix[i] = (int *)malloc(sizeof(int) * data->width);
+		data->color_matrix[i] = (unsigned int *)malloc(sizeof(unsigned int) * data->width);
 		i++;
 	}
 }

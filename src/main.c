@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:54:00 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/25 18:58:37 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/26 14:30:57 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ int	print_map(fdf *data)
 //print map and free
 int	main(void)
 {
+	fdf	*data;
+
 	// char *hex = "0xffffffff";
 	// printf("%u",ft_atoi_base( ft_strchr(hex, 'x')+1, 16 )) ;
 	// printf("%p", (ft_strchr("a", 'x')+1) );
-	fdf	*data;
-
 	data = (fdf *)malloc(sizeof(fdf));
 	if (data == NULL)
 		return (2);
@@ -59,7 +59,8 @@ int	main(void)
 	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (!data->image || (mlx_image_to_window(data->mlx, data->image, 0, 0) < 0))
 		return (0); // ft_error();
-	read_file("test_maps/42.fdf", data);
+	if (!read_file("test_maps/test.fdf", data))
+		return (2);
 	data->zoom = 50;
 	draw(data);
 	// bresenham(10,10,600,300, data);

@@ -14,19 +14,26 @@ typedef struct s_fdf
 	int				width;
 	int				height;
 	int				**z_matrix;
-	unsigned int				**color_matrix;
+	unsigned int	**color_matrix;
 	int				zoom;
-	unsigned int	color;
 
 	mlx_t			*mlx;
 	mlx_image_t		*image;
 
 }					fdf;
 
+typedef struct s_cordenates
+{
+	float			x;
+	float			y;
+	float			x1;
+	float			y1;
+	unsigned int	color;
+}					cordenates;
+
 //prototypes
 int					read_file(char *file_name, fdf *data);
-void				bresenham(float x, float y, float x1, float y1, fdf *data,
-						int color);
+void				bresenham(cordenates *c, fdf *data);
 void				draw(fdf *data);
 
 // typedef struct mlx
