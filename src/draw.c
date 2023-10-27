@@ -6,11 +6,16 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:10:36 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/26 18:34:58 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/27 13:41:09 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void	print_cordinates(float x, float y, float x1, float y1)
+{
+	printf("[%3d] [%3d]->[%3d] [%3d]\n", (int)x, (int)y, (int)x1, (int)y1);
+}
 
 float	maxval(float a, float b)
 {
@@ -43,6 +48,7 @@ void	bresenham_x(float x, float y, fdf *data, unsigned int color)
 
 	x1 = x + 1;
 	y1 = y;
+	// print_cordinates(x, y, x1, y1);
 	get_zoom(&x, &y, data->zoom);
 	get_zoom(&x1, &y1, data->zoom);
 	x_step = (x1 - x);                        // 3
@@ -67,6 +73,7 @@ void	bresenham_y(float x, float y, fdf *data, unsigned int color)
 
 	x1 = x;
 	y1 = y + 1;
+	// print_cordinates(x, y, x1, y1);
 	get_zoom(&x, &y, data->zoom);
 	get_zoom(&x1, &y1, data->zoom);
 	x_step = (x1 - x);                        // 3
@@ -95,27 +102,41 @@ unsigned int	get_color_x(fdf *data, float x, float y)
 	color2 = data->color_matrix[(int)y1][(int)x1];
 	if (data->has_color)
 	{
-		if (color1 = !0xffffffff)
+		if (color1 != 0xffffffff)
 			return (color1);
+		if (color2 != 0xffffffff)
+			return (color2);
+		return (color1);
 	}
-	return (data->color_matrix[(int)y][(int)x]);
-	if (data->z_matrix[(int)y][(int)x] > 0)
-		return (0xff0000ff);
-	return (data->color_matrix[(int)y][(int)x]);
+	if (data->z_matrix[(int)y][(int)x] != 0
+		|| data->z_matrix[(int)y1][(int)x1] != 0)
+		return (0xffff00ff);
+	return (color1);
 }
 
 unsigned int	get_color_y(fdf *data, float x, float y)
 {
-	float	x1;
-	float	y1;
+	float			x1;
+	float			y1;
+	unsigned int	color1;
+	unsigned int	color2;
 
 	x1 = x;
 	y1 = y + 1;
+	color1 = data->color_matrix[(int)y][(int)x];
+	color2 = data->color_matrix[(int)y1][(int)x1];
 	if (data->has_color)
-		return (data->color_matrix[(int)y][(int)x]);
-	if (data->z_matrix[(int)y][(int)x] > 0)
-		return (0xff0000ff);
-	return (data->color_matrix[(int)y][(int)x]);
+	{
+		if (color1 != 0xffffffff)
+			return (color1);
+		if (color2 != 0xffffffff)
+			return (color2);
+		return (color1);
+	}
+	if (data->z_matrix[(int)y][(int)x] != 0
+		|| data->z_matrix[(int)y1][(int)x1] != 0)
+		return (0xffff00ff);
+	return (color1);
 }
 
 void	draw(fdf *data)
@@ -133,7 +154,7 @@ void	draw(fdf *data)
 			if (x < data->width - 1)
 				bresenham_x(x, y, data, get_color_x(data, x, y));
 			if (y < data->height - 1)
-				bresenham_y(x, y, data, get_color(data, x, y));
+				bresenham_y(x, y, data, get_color_y(data, x, y));
 			x++;
 		}
 		y++;

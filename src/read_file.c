@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:43:34 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/26 18:16:45 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/27 13:43:56 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	fill_matrix(char *line, int *z, unsigned int *color, fdf *data)
 
 	i = 0;
 	nums = ft_split(line, ' ');
-	data->has_color = 0;
 	while (i < data->width)
 	{
 		color_hex = 0xffffffff;
@@ -77,10 +76,7 @@ void	fill_matrix(char *line, int *z, unsigned int *color, fdf *data)
 		if ((ft_strchr(nums[i], 'x')) != NULL)
 		{
 			data->has_color = 1;
-			color_hex = ((ft_atoi_base(ft_strchr(nums[i], 'x') + 1,
-										16))
-							<< 8) |
-				0xFF;
+			color_hex = ((ft_atoi_base(ft_strchr(nums[i], 'x') + 1, 16)) << 8) + 0xFF;
 		}
 		color[i] = color_hex;
 		i++;
@@ -103,6 +99,7 @@ void	create_matrix(fdf *data)
 				* data->width);
 		i++;
 	}
+	data->has_color = 0;
 }
 
 int	read_file(char *file_name, fdf *data)
