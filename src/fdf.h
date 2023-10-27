@@ -8,12 +8,21 @@
 # include <unistd.h>
 # define WIDTH 1000
 # define HEIGHT 1000
+# define WHITE 0xffffffff
+
+typedef struct s_cordenates
+{
+	float			x;
+	float			y;
+	int				z;
+	unsigned int	color;
+}					cordenates;
 
 typedef struct s_fdf
 {
 	int				width;
 	int				height;
-	int				**z_matrix;
+	cordenates		**matrix;
 	unsigned int	**color_matrix;
 	int				zoom;
 	int				has_color;
@@ -22,15 +31,6 @@ typedef struct s_fdf
 	mlx_image_t		*image;
 
 }					fdf;
-
-typedef struct s_cordenates
-{
-	float			x;
-	float			y;
-	float			x1;
-	float			y1;
-	unsigned int	color;
-}					cordenates;
 
 //prototypes
 int					read_file(char *file_name, fdf *data);

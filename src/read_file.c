@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:43:34 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/27 13:43:56 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/27 16:45:27 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,24 +61,26 @@ int	update_height_width(char *file_name, int *heigh, int *width)
 	return (1);
 }
 
-void	fill_matrix(char *line, int *z, unsigned int *color, fdf *data)
+void	fill_matrix(fdf *data, int x, int y, char *line)
 {
-	int				i;
-	char			**nums;
-	unsigned int	color_hex;
+	int		i;
+	char	**nums;
 
 	i = 0;
 	nums = ft_split(line, ' ');
 	while (i < data->width)
 	{
-		color_hex = 0xffffffff;
-		z[i] = ft_atoi(nums[i]);
+		data->matrix[y][x].x = x;
+		data->matrix[y][x].y = y;
+		data->matrix[y][x].z = ft_atoi(nums[i]);
 		if ((ft_strchr(nums[i], 'x')) != NULL)
 		{
 			data->has_color = 1;
-			color_hex = ((ft_atoi_base(ft_strchr(nums[i], 'x') + 1, 16)) << 8) + 0xFF;
+			data->matrix[y][x].color = ((ft_atoi_base(ft_strchr(nums[i], 'x')
+							+ 1, 16)) << 8) + 0xFF;
 		}
-		color[i] = color_hex;
+		else
+			data->matrix[y][x].color = WHITE;
 		i++;
 	}
 	ft_freepp(nums);
@@ -89,14 +91,10 @@ void	create_matrix(fdf *data)
 	int	i;
 
 	i = 0;
-	data->z_matrix = (int **)malloc(sizeof(int *) * data->height + 1);
-	data->color_matrix = (unsigned int **)malloc(sizeof(unsigned int *)
-			* data->height + 1);
+	data->matrix = (cordenates **)malloc(sizeof(cordenates *) * data->height + 1);
 	while (i < data->height)
 	{
-		data->z_matrix[i] = (int *)malloc(sizeof(int) * data->width);
-		data->color_matrix[i] = (unsigned int *)malloc(sizeof(unsigned int)
-				* data->width);
+		data->matrix[i] = (cordenates *)malloc(sizeof(cordenates) * data->width);
 		i++;
 	}
 	data->has_color = 0;
@@ -104,25 +102,32 @@ void	create_matrix(fdf *data)
 
 int	read_file(char *file_name, fdf *data)
 {
-	int i;
+	int x;
+	int y;
 	char *line;
 	int fd;
-	i = 0;
+	x = 0;
+	y = 0;
 
 	if (!update_height_width(file_name, &data->height, &data->width))
 		return (0);
 	create_matrix(data);
-	i = 0;
+
 	fd = open(file_name, O_RDONLY);
 	line = get_next_line(fd);
-	while (line != NULL)
+	while (y < data->height)
 	{
-		fill_matrix(line, data->z_matrix[i], data->color_matrix[i], data);
-		free(line);
-		line = get_next_line(fd);
-		i++;
+		x = 0;
+		while (x < data->width)
+		{
+			fill_matrix(line, x, y, line);
+			free(line);
+			line = get_next_line(fd);
+			x++;
+		}
+		y++;
 	}
 	close(fd);
-	data->z_matrix[i] = NULL;
+	data->matrix[y] = NULL;
 	return (1);
 }

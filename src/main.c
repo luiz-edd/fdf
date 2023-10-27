@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:54:00 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/27 14:00:26 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/27 15:40:31 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	print_map(fdf *data)
 		j = 0;
 		while (j < data->width)
 		{
-			printf("%3d,%08u", data->z_matrix[i][j], data->color_matrix[i][j]);
+			printf("%3d,%08u", data->matrix[i][j]->z, data->color_matrix[i][j]);
 			j++;
 		}
 		printf("\n");
@@ -59,7 +59,7 @@ int	main(void)
 	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (!data->image || (mlx_image_to_window(data->mlx, data->image, 0, 0) < 0))
 		return (0); // ft_error();
-	if (!read_file("test_maps/pyramide.fdf", data))
+	if (!read_file("test_maps/42.fdf", data))
 		return (2);
 	data->zoom = 30;
 	draw(data);
