@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:43:34 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/27 16:45:27 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/30 13:09:46 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,13 @@ int	update_height_width(char *file_name, int *heigh, int *width)
 	return (1);
 }
 
-void	fill_matrix(fdf *data, int x, int y, char *line)
+void	fill_matrix(fdf *data, int y, char *line)
 {
 	int		i;
 	char	**nums;
+	int		x;
 
+	x = 0;
 	i = 0;
 	nums = ft_split(line, ' ');
 	while (i < data->width)
@@ -75,13 +77,13 @@ void	fill_matrix(fdf *data, int x, int y, char *line)
 		data->matrix[y][x].z = ft_atoi(nums[i]);
 		if ((ft_strchr(nums[i], 'x')) != NULL)
 		{
-			data->has_color = 1;
 			data->matrix[y][x].color = ((ft_atoi_base(ft_strchr(nums[i], 'x')
 							+ 1, 16)) << 8) + 0xFF;
 		}
 		else
 			data->matrix[y][x].color = WHITE;
 		i++;
+		x++;
 	}
 	ft_freepp(nums);
 }
@@ -91,22 +93,21 @@ void	create_matrix(fdf *data)
 	int	i;
 
 	i = 0;
-	data->matrix = (cordenates **)malloc(sizeof(cordenates *) * data->height + 1);
+	data->matrix = (cordenates **)malloc(sizeof(cordenates *) * data->height
+			+ 1);
 	while (i < data->height)
 	{
-		data->matrix[i] = (cordenates *)malloc(sizeof(cordenates) * data->width);
+		data->matrix[i] = (cordenates *)malloc(sizeof(cordenates)
+				* data->width);
 		i++;
 	}
-	data->has_color = 0;
 }
 
 int	read_file(char *file_name, fdf *data)
 {
-	int x;
 	int y;
 	char *line;
 	int fd;
-	x = 0;
 	y = 0;
 
 	if (!update_height_width(file_name, &data->height, &data->width))
@@ -117,14 +118,10 @@ int	read_file(char *file_name, fdf *data)
 	line = get_next_line(fd);
 	while (y < data->height)
 	{
-		x = 0;
-		while (x < data->width)
-		{
-			fill_matrix(line, x, y, line);
-			free(line);
-			line = get_next_line(fd);
-			x++;
-		}
+		fill_matrix(data, y, line);
+
+		free(line);
+		line = get_next_line(fd);
 		y++;
 	}
 	close(fd);

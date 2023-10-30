@@ -23,9 +23,7 @@ typedef struct s_fdf
 	int				width;
 	int				height;
 	cordenates		**matrix;
-	unsigned int	**color_matrix;
 	int				zoom;
-	int				has_color;
 
 	mlx_t			*mlx;
 	mlx_image_t		*image;
@@ -39,6 +37,7 @@ void				bresenham_y(float x, float y, fdf *data,
 void				bresenham_x(float x, float y, fdf *data,
 						unsigned int color);
 void				draw(fdf *data);
+unsigned int		get_color(cordenates *cord, cordenates *cord1);
 
 // typedef struct mlx
 // {

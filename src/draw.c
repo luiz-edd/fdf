@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:10:36 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/27 16:58:44 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/30 13:11:13 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,46 +31,27 @@ float	sign(float a)
 	return (a);
 }
 
-void	get_zoom(unsigned int zoom, float *x, float *y)
+void	get_zoom(float *x, float *y, unsigned int zoom)
 {
 	*x *= zoom;
 	*y *= zoom;
 }
 // [3,5] [6,10]
 
-unsigned int	get_color(fdf *data, cordenates *cord, cordenates *cord1)
-{
-	float			x1;
-	float			y1;
-	unsigned int	color;
-	unsigned int	color1;
 
-	color = cord->color;
-	color1 = cord1->color;
-	if (data->has_color)
-	{
-		if (color != 0xffffffff)
-			return (color);
-		if (color1 != 0xffffffff)
-			return (color1);
-		return (color);
-	}
-	if (cord->z != 0 || cord->z != 0)
-		return (0xffff00ff);
-	return (color);
-}
 
 void	bresenham(fdf *data, cordenates *cord, float x1, float y1)
 {
-	float	x_step;
-	float	y_step;
-	float	x;
-	float	y;
-	int		max;
+	float			x_step;
+	float			y_step;
+	float			x;
+	float			y;
+	int				max;
+	unsigned int	color;
 
 	x = cord->x;
 	y = cord->y;
-	get_color(data, cord, &data->color_matrix[(int)y1][(int)x1]);
+	color = get_color(cord, &data->matrix[(int)y1][(int)x1]);
 	get_zoom(&x, &y, data->zoom);
 	get_zoom(&x1, &y1, data->zoom);
 	x_step = (x1 - x);                        // 3
@@ -80,8 +61,7 @@ void	bresenham(fdf *data, cordenates *cord, float x1, float y1)
 	y_step /= max;                            // -6/6 = -1;
 	while ((int)(x - x1) || (int)(y - y1))
 	{
-		mlx_put_pixel(data->image, x, y, get_color(data, cord,
-					&data->color_matrix[(int)y1][(int)x1]));
+		mlx_put_pixel(data->image, x, y, color);
 		x += x_step;
 		y += y_step;
 	}
