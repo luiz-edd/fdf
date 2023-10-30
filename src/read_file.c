@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:43:34 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/30 13:22:52 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:29:40 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,17 @@ int	update_height_width(char *file_name, int *heigh, int *width)
 	return (1);
 }
 
+// unsigned int	add_transparency(char *color)
+// {
+// 	unsigned int	new_color;
+// 	unsigned int	mask;
+
+// 	mask = 2147483648;
+// 	new_color = ft_atoi_base(color, 16);
+// 	// return ((new_color & 0x00FFFFFF) | mask);
+// 	return ((new_color << 8) | 0xff);
+// }
+
 void	fill_matrix(fdf *data, int y, char *line)
 {
 	int		i;
@@ -77,8 +88,11 @@ void	fill_matrix(fdf *data, int y, char *line)
 		data->matrix[y][x].z = ft_atoi(nums[i]);
 		if ((ft_strchr(nums[i], 'x')) != NULL)
 		{
+			// data->matrix[y][x].color = add_transparency(ft_strchr(nums[i],
+			// 'x')
+			// 		+ 1);
 			data->matrix[y][x].color = ((ft_atoi_base(ft_strchr(nums[i], 'x')
-							+ 1, 16)) << 8) + 0xFF;
+							+ 1, 16) << 8) | 0xFF);
 		}
 		else
 			data->matrix[y][x].color = 0;

@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:54:00 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/30 13:21:17 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:32:29 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	print_map(fdf *data)
 		j = 0;
 		while (j < data->width)
 		{
-			printf("%3d", data->matrix[i][j].z);
+			printf("%10u", data->matrix[i][j].color);
 			j++;
 		}
 		printf("\n");
@@ -58,12 +58,12 @@ int	main(void)
 	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (!data->image || (mlx_image_to_window(data->mlx, data->image, 0, 0) < 0))
 		return (0); // ft_error();
-	if (!read_file("test_maps/pyramide.fdf", data))
+	if (!read_file("test_maps/julia.fdf", data))
 		return (2);
-	data->zoom = 20;
+	data->zoom = 3;
 	draw(data);
 	// bresenham(10,10,600,300, data);
-	// mlx_loop_hook(data->mlx, , data->mlx);
+	// mlx_loop_hook(data->mlx, , data->mlx);fd
 	mlx_loop(data->mlx);
 	mlx_terminate(data->mlx);
 	print_map(data);

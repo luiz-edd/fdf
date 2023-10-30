@@ -6,16 +6,11 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:10:36 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/30 13:11:13 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:32:47 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void	print_cordinates(float x, float y, float x1, float y1)
-{
-	printf("[%3d] [%3d]->[%3d] [%3d]\n", (int)x, (int)y, (int)x1, (int)y1);
-}
 
 float	maxval(float a, float b)
 {
@@ -31,14 +26,31 @@ float	sign(float a)
 	return (a);
 }
 
-void	get_zoom(float *x, float *y, unsigned int zoom)
+void	get_zoom(float *x, float *y, float zoom)
 {
 	*x *= zoom;
 	*y *= zoom;
 }
 // [3,5] [6,10]
 
+void	make_3d(float *x, float *y, int z)
+{
+	*x = (*x - *y) * cos(0.8);
+	*y = (*x + *y) * sin(0.8) - z;
+}
 
+void	shift(float *x, float *y, float *x1, float *y1)
+{
+	int	shift_x;
+	int	shift_y;
+
+	shift_x = 500;
+	shift_y = 250;
+	*x += shift_x;
+	*y += shift_y;
+	*x1 += shift_x;
+	*y1 += shift_y;
+}
 
 void	bresenham(fdf *data, cordenates *cord, float x1, float y1)
 {
@@ -51,9 +63,16 @@ void	bresenham(fdf *data, cordenates *cord, float x1, float y1)
 
 	x = cord->x;
 	y = cord->y;
+	//color
 	color = get_color(cord, &data->matrix[(int)y1][(int)x1]);
+	//3D
+	make_3d(&x, &y, cord->z);
+	make_3d(&x1, &y1, data->matrix[(int)y1][(int)x1].z);
+	//zoom
 	get_zoom(&x, &y, data->zoom);
 	get_zoom(&x1, &y1, data->zoom);
+	//shift
+	// shift(&x, &y, &x1, &y1);
 	x_step = (x1 - x);                        // 3
 	y_step = (y1 - y);                        // 5
 	max = maxval(sign(x_step), sign(y_step)); // 5
@@ -61,7 +80,8 @@ void	bresenham(fdf *data, cordenates *cord, float x1, float y1)
 	y_step /= max;                            // -6/6 = -1;
 	while ((int)(x - x1) || (int)(y - y1))
 	{
-		mlx_put_pixel(data->image, x, y, color);
+		if((x > 0 && x < WIDTH) && (y > 0 && y < HEIGHT))
+			mlx_put_pixel(data->image, x, y, color);
 		x += x_step;
 		y += y_step;
 	}
