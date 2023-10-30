@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:43:34 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/30 13:09:46 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/30 13:22:52 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	fill_matrix(fdf *data, int y, char *line)
 							+ 1, 16)) << 8) + 0xFF;
 		}
 		else
-			data->matrix[y][x].color = WHITE;
+			data->matrix[y][x].color = 0;
 		i++;
 		x++;
 	}

@@ -32,10 +32,7 @@ typedef struct s_fdf
 
 //prototypes
 int					read_file(char *file_name, fdf *data);
-void				bresenham_y(float x, float y, fdf *data,
-						unsigned int color);
-void				bresenham_x(float x, float y, fdf *data,
-						unsigned int color);
+void				bresenham(float x, float y, fdf *data, unsigned int color);
 void				draw(fdf *data);
 unsigned int		get_color(cordenates *cord, cordenates *cord1);
 
