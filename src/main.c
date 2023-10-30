@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:54:00 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/30 17:32:29 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:53:41 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ int	main(void)
 	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (!data->image || (mlx_image_to_window(data->mlx, data->image, 0, 0) < 0))
 		return (0); // ft_error();
-	if (!read_file("test_maps/julia.fdf", data))
+	if (!read_file("test_maps/42.fdf", data))
 		return (2);
-	data->zoom = 3;
+	data->zoom = 40;
 	draw(data);
 	// bresenham(10,10,600,300, data);
 	// mlx_loop_hook(data->mlx, , data->mlx);fd

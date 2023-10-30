@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:10:36 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/30 17:32:47 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:59:32 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,13 @@ void	get_zoom(float *x, float *y, float zoom)
 
 void	make_3d(float *x, float *y, int z)
 {
-	*x = (*x - *y) * cos(0.8);
-	*y = (*x + *y) * sin(0.8) - z;
+	float	aux_x;
+	float	aux_y;
+
+	aux_x = *x;
+	aux_y = *y;
+	*x = (aux_x - aux_y) * cos(0.523599);
+	*y = (aux_x + aux_y) * sin(0.523599) - z;
 }
 
 void	shift(float *x, float *y, float *x1, float *y1)
@@ -44,8 +49,8 @@ void	shift(float *x, float *y, float *x1, float *y1)
 	int	shift_x;
 	int	shift_y;
 
-	shift_x = 500;
-	shift_y = 250;
+	shift_x = 400;
+	shift_y = 300;
 	*x += shift_x;
 	*y += shift_y;
 	*x1 += shift_x;
@@ -72,7 +77,7 @@ void	bresenham(fdf *data, cordenates *cord, float x1, float y1)
 	get_zoom(&x, &y, data->zoom);
 	get_zoom(&x1, &y1, data->zoom);
 	//shift
-	// shift(&x, &y, &x1, &y1);
+	shift(&x, &y, &x1, &y1);
 	x_step = (x1 - x);                        // 3
 	y_step = (y1 - y);                        // 5
 	max = maxval(sign(x_step), sign(y_step)); // 5
@@ -80,7 +85,7 @@ void	bresenham(fdf *data, cordenates *cord, float x1, float y1)
 	y_step /= max;                            // -6/6 = -1;
 	while ((int)(x - x1) || (int)(y - y1))
 	{
-		if((x > 0 && x < WIDTH) && (y > 0 && y < HEIGHT))
+		if ((x > 0 && x < WIDTH) && (y > 0 && y < HEIGHT))
 			mlx_put_pixel(data->image, x, y, color);
 		x += x_step;
 		y += y_step;
