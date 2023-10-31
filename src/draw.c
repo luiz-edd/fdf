@@ -1,94 +1,87 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
+/*   draw.point                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:10:36 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/30 17:59:32 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/31 15:12:59 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-float	maxval(float a, float b)
+void	get_zoom(cordenates *aux, float zoom)
 {
-	if (a > b)
-		return (a);
-	return (b);
-}
-
-float	sign(float a)
-{
-	if (a < 0)
-		return (-a);
-	return (a);
-}
-
-void	get_zoom(float *x, float *y, float zoom)
-{
-	*x *= zoom;
-	*y *= zoom;
+	aux->x *= zoom;
+	aux->y *= zoom;
+	aux->x1 *= zoom;
+	aux->y1 *= zoom;
 }
 // [3,5] [6,10]
 
-void	make_3d(float *x, float *y, int z)
-{
-	float	aux_x;
-	float	aux_y;
+// void	make_3d(float *x, float *y, int z)
+// {
+// 	float	aux_x;
+// 	float	aux_y;
 
-	aux_x = *x;
-	aux_y = *y;
-	*x = (aux_x - aux_y) * cos(0.523599);
-	*y = (aux_x + aux_y) * sin(0.523599) - z;
+// 	aux_x = *x;
+// 	aux_y = *y;
+// 	*x = (aux_x - aux_y) * cos(0.523599);
+// 	*y = (aux_x + aux_y) * sin(0.523599) - z;
+// }
+
+void	make_3d(cordenates *aux, int z, int z1)
+{
+	float	x;
+	float	y;
+	float	x1;
+	float	y1;
+
+	x = aux->x;
+	y = aux->y;
+	x1 = aux->x1;
+	y1 = aux->y1;
+	aux->x = (x - y) * cos(ISO_ANGLE);
+	aux->y = (x + y) * sin(ISO_ANGLE) - z;
+	aux->x1 = (x1 - y1) * cos(ISO_ANGLE);
+	aux->y1 = (x1 + y1) * sin(ISO_ANGLE) - z1;
 }
 
-void	shift(float *x, float *y, float *x1, float *y1)
-{
-	int	shift_x;
-	int	shift_y;
-
-	shift_x = 400;
-	shift_y = 300;
-	*x += shift_x;
-	*y += shift_y;
-	*x1 += shift_x;
-	*y1 += shift_y;
-}
-
-void	bresenham(fdf *data, cordenates *cord, float x1, float y1)
+void	bresenham(fdf *data, point *p1, float x1, float y1)
 {
 	float			x_step;
 	float			y_step;
-	float			x;
-	float			y;
 	int				max;
 	unsigned int	color;
+	cordenates	cord;
 
-	x = cord->x;
-	y = cord->y;
+	cord.x = p1->x;
+	cord.y = p1->y;
+	cord.x1 = x1;
+	cord.y1 = y1;
 	//color
-	color = get_color(cord, &data->matrix[(int)y1][(int)x1]);
+	color = get_color(p1, &data->matrix[(int)cord.y1][(int)cord.x1]);
 	//3D
-	make_3d(&x, &y, cord->z);
-	make_3d(&x1, &y1, data->matrix[(int)y1][(int)x1].z);
+	make_3d(&cord, p1->z, data->matrix[(int)cord.y1][(int)cord.x1].z);
 	//zoom
-	get_zoom(&x, &y, data->zoom);
-	get_zoom(&x1, &y1, data->zoom);
-	//shift
-	shift(&x, &y, &x1, &y1);
-	x_step = (x1 - x);                        // 3
-	y_step = (y1 - y);                        // 5
-	max = maxval(sign(x_step), sign(y_step)); // 5
-	x_step /= max;                            //
-	y_step /= max;                            // -6/6 = -1;
-	while ((int)(x - x1) || (int)(y - y1))
+	get_zoom(&cord, data->zoom);
+	//offset
+	centralize(data, &cord);
+	//move
+	move(data, &cord);
+	x_step = (cord.x1 - cord.x);
+	y_step = (cord.y1 - cord.y);
+	max = ft_maxval(ft_absolute(x_step), ft_absolute(y_step));
+	x_step /= max;
+	y_step /= max;
+	while ((int)(cord.x - cord.x1) || (int)(cord.y - cord.y1))
 	{
-		if ((x > 0 && x < WIDTH) && (y > 0 && y < HEIGHT))
-			mlx_put_pixel(data->image, x, y, color);
-		x += x_step;
-		y += y_step;
+		if ((cord.x > 0 && cord.x < WIDTH) && (cord.y > 0 && cord.y < HEIGHT))
+			mlx_put_pixel(data->image, cord.x, cord.y, color);
+		cord.x += x_step;
+		cord.y += y_step;
 	}
 }
 

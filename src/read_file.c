@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_file.c                                        :+:      :+:    :+:   */
+/*   read_file.point                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:43:34 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/30 17:29:40 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/31 14:09:06 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,6 @@ int	update_height_width(char *file_name, int *heigh, int *width)
 	return (1);
 }
 
-// unsigned int	add_transparency(char *color)
-// {
-// 	unsigned int	new_color;
-// 	unsigned int	mask;
-
-// 	mask = 2147483648;
-// 	new_color = ft_atoi_base(color, 16);
-// 	// return ((new_color & 0x00FFFFFF) | mask);
-// 	return ((new_color << 8) | 0xff);
-// }
-
 void	fill_matrix(fdf *data, int y, char *line)
 {
 	int		i;
@@ -88,9 +77,6 @@ void	fill_matrix(fdf *data, int y, char *line)
 		data->matrix[y][x].z = ft_atoi(nums[i]);
 		if ((ft_strchr(nums[i], 'x')) != NULL)
 		{
-			// data->matrix[y][x].color = add_transparency(ft_strchr(nums[i],
-			// 'x')
-			// 		+ 1);
 			data->matrix[y][x].color = ((ft_atoi_base(ft_strchr(nums[i], 'x')
 							+ 1, 16) << 8) | 0xFF);
 		}
@@ -107,33 +93,31 @@ void	create_matrix(fdf *data)
 	int	i;
 
 	i = 0;
-	data->matrix = (cordenates **)malloc(sizeof(cordenates *) * data->height
-			+ 1);
+	data->matrix = (point **)malloc(sizeof(point *) * data->height + 1);
 	while (i < data->height)
 	{
-		data->matrix[i] = (cordenates *)malloc(sizeof(cordenates)
-				* data->width);
+		data->matrix[i] = (point *)malloc(sizeof(point) * data->width);
 		i++;
 	}
+	data->shift_x = 0;
+	data->shift_y = 0;
 }
 
 int	read_file(char *file_name, fdf *data)
 {
-	int y;
-	char *line;
-	int fd;
-	y = 0;
+	int		y;
+	char	*line;
+	int		fd;
 
+	y = 0;
 	if (!update_height_width(file_name, &data->height, &data->width))
 		return (0);
 	create_matrix(data);
-
 	fd = open(file_name, O_RDONLY);
 	line = get_next_line(fd);
 	while (y < data->height)
 	{
 		fill_matrix(data, y, line);
-
 		free(line);
 		line = get_next_line(fd);
 		y++;
@@ -142,3 +126,14 @@ int	read_file(char *file_name, fdf *data)
 	data->matrix[y] = NULL;
 	return (1);
 }
+
+// unsigned int	add_transparency(char *color)
+// {
+// 	unsigned int	new_color;
+// 	unsigned int	mask;
+
+// 	mask = 2147483648;
+// 	new_color = ft_atoi_base(color, 16);
+// 	// return ((new_color & 0x00FFFFFF) | mask);
+// 	return ((new_color << 8) | 0xff);
+// }

@@ -1,5 +1,4 @@
 NAME = fdf
-#CC = cc -Wall -Wextra -Werror -g -O0 -Wunreachable-code -Ofast
 CC = cc -Wall -Wextra -Werror -g -O0 -Wunreachable-code
 
 LIBMLX = ./lib/MLX42
@@ -12,7 +11,7 @@ PATH_LIBFT = lib/libft/
 PATH_TO_SRC = src/
 PATH_TO_OBJ = obj/
 
-SRC = read_file.c main.c draw.c color.c
+SRC = read_file.c main.c draw.c color.c rotation.c
 OBJ = $(SRC:.c=.o)
 
 SRC_PATH = $(addprefix $(PATH_TO_SRC), $(SRC))

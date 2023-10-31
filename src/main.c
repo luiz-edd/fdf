@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main.point                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 13:54:00 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/30 17:53:41 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/10/31 14:08:45 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,8 @@ int	main(void)
 		return (2);
 	data->zoom = 40;
 	draw(data);
-	// bresenham(10,10,600,300, data);
-	// mlx_loop_hook(data->mlx, , data->mlx);fd
+	mlx_loop_hook(data->mlx, deal_key, data);
 	mlx_loop(data->mlx);
-	mlx_terminate(data->mlx);
+	// mlx_terminate(data->mlx);
 	print_map(data);
 }
