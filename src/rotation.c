@@ -67,18 +67,19 @@ void	deal_key(void *param)
 	// printf("test");
 	data = param;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
-	{
-		data->shift_x += 10;
-		// mlx_delete_image(data->mlx, data->image);
-		draw(data);
-	}
-	if (mlx_is_key_down(data->mlx, MLX_KEY_A))
-		printf("a\n");
+		data->shift_y -= 10;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_S))
-		printf("s\n");
+		data->shift_y += 10;
+	if (mlx_is_key_down(data->mlx, MLX_KEY_A))
+		data->shift_x -= 10;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_D))
-		printf("d\n");
-	
+		data->shift_x += 10;
+	if (mlx_is_key_down(data->mlx, MLX_KEY_L))
+		data->angle += 0.05;
+	mlx_delete_image(data->mlx, data->image);
+	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	mlx_image_to_window(data->mlx, data->image, 0, 0);
+	draw(data);
 }
 
 void	move(fdf *data, cordenates *cord)

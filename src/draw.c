@@ -32,7 +32,7 @@ void	get_zoom(cordenates *aux, float zoom)
 // 	*y = (aux_x + aux_y) * sin(0.523599) - z;
 // }
 
-void	make_3d(cordenates *aux, int z, int z1)
+void	make_3d(cordenates *aux, int z, int z1, fdf *data)
 {
 	float	x;
 	float	y;
@@ -43,10 +43,10 @@ void	make_3d(cordenates *aux, int z, int z1)
 	y = aux->y;
 	x1 = aux->x1;
 	y1 = aux->y1;
-	aux->x = (x - y) * cos(ISO_ANGLE);
-	aux->y = (x + y) * sin(ISO_ANGLE) - z;
-	aux->x1 = (x1 - y1) * cos(ISO_ANGLE);
-	aux->y1 = (x1 + y1) * sin(ISO_ANGLE) - z1;
+	aux->x = (x - y) * cos(data->angle);
+	aux->y = (x + y) * sin(data->angle) - (z);
+	aux->x1 = (x1 - y1) * cos(data->angle);
+	aux->y1 = (x1 + y1) * sin(data->angle) - (z1);
 }
 
 void	bresenham(fdf *data, point *p1, float x1, float y1)
@@ -55,7 +55,7 @@ void	bresenham(fdf *data, point *p1, float x1, float y1)
 	float			y_step;
 	int				max;
 	unsigned int	color;
-	cordenates	cord;
+	cordenates		cord;
 
 	cord.x = p1->x;
 	cord.y = p1->y;
@@ -64,7 +64,7 @@ void	bresenham(fdf *data, point *p1, float x1, float y1)
 	//color
 	color = get_color(p1, &data->matrix[(int)cord.y1][(int)cord.x1]);
 	//3D
-	make_3d(&cord, p1->z, data->matrix[(int)cord.y1][(int)cord.x1].z);
+	make_3d(&cord, p1->z, data->matrix[(int)cord.y1][(int)cord.x1].z, data);
 	//zoom
 	get_zoom(&cord, data->zoom);
 	//offset

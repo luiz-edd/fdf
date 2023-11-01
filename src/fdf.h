@@ -38,7 +38,8 @@ typedef struct s_fdf
 	float			zoom;
 	float			shift_x;
 	float			shift_y;
-	float			shift_z;
+	float			z_scale;
+	float			angle;
 
 	mlx_t			*mlx;
 	mlx_image_t		*image;

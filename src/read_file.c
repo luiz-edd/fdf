@@ -101,6 +101,7 @@ void	create_matrix(fdf *data)
 	}
 	data->shift_x = 0;
 	data->shift_y = 0;
+	data->angle = 0.523599;
 }
 
 int	read_file(char *file_name, fdf *data)
