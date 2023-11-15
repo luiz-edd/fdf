@@ -12,15 +12,15 @@
 # define WHITE 0xffffffff
 # define ISO_ANGLE 0.523599
 
-typedef struct s_cordenates
-{
-	float			x;
-	float			y;
-	float			x1;
-	float			y1;
-	int				z;
-	unsigned int	color;
-}					cordenates;
+// typedef struct s_cordenates
+// {
+// 	float			x;
+// 	float			y;
+// 	float			x1;
+// 	float			y1;
+// 	int				z;
+// 	unsigned int	color;
+// }					cordenates;
 
 typedef struct s_point
 {
@@ -34,12 +34,16 @@ typedef struct s_fdf
 {
 	int				width;
 	int				height;
+	int				is_isometric;
 	point			**matrix;
 	float			zoom;
 	float			shift_x;
 	float			shift_y;
 	float			z_scale;
 	float			angle;
+	float			x_angle;
+	float			y_angle;
+	float			z_angle;
 
 	mlx_t			*mlx;
 	mlx_image_t		*image;
@@ -48,12 +52,12 @@ typedef struct s_fdf
 
 //prototypes
 int					read_file(char *file_name, fdf *data);
-void				bresenham(fdf *data, point *cord, float x1, float y1);
+void				bresenham(fdf *data, point p1, point p2);
 void				draw(fdf *data);
 unsigned int		get_color(point *p1, point *p2);
-void				centralize(fdf *data, cordenates *aux);
+void				centralize(fdf *data, point *p1, point *p2);
 void				deal_key(void *param);
-void				move(fdf *data, cordenates *cord);
+void				move(fdf *data, point *p1, point *p2);
 
 // typedef struct mlx
 // {

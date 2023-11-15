@@ -24,7 +24,6 @@ unsigned int	get_color(point *p1, point *p2)
 		return (color);
 	if (color1 != 0)
 		return (color1);
-	
 	if (p1->z > 0 || p2->z > 0)
 		return (0x0000FFFF);
 	return (WHITE);

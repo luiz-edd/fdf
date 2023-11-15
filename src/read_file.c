@@ -72,8 +72,8 @@ void	fill_matrix(fdf *data, int y, char *line)
 	nums = ft_split(line, ' ');
 	while (i < data->width)
 	{
-		data->matrix[y][x].x = x;
-		data->matrix[y][x].y = y;
+		data->matrix[y][x].x = x - ((data->width) / 2 );
+		data->matrix[y][x].y = y - (data->height / 2);
 		data->matrix[y][x].z = ft_atoi(nums[i]);
 		if ((ft_strchr(nums[i], 'x')) != NULL)
 		{
@@ -99,9 +99,16 @@ void	create_matrix(fdf *data)
 		data->matrix[i] = (point *)malloc(sizeof(point) * data->width);
 		i++;
 	}
+	data->zoom = 1;
+	
 	data->shift_x = 0;
 	data->shift_y = 0;
-	data->angle = 0.523599;
+
+	data->x_angle = 0;
+	data->y_angle = 0;
+	data->z_angle = 0;
+
+	data->is_isometric = 0;
 }
 
 int	read_file(char *file_name, fdf *data)

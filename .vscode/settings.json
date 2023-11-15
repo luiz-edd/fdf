@@ -27,6 +27,7 @@
 		"sstream": "c",
 		"streambuf": "c",
 		"tuple": "c",
-		"utility": "c"
+		"utility": "c",
+		"random": "c"
 	}
 }

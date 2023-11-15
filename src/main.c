@@ -60,10 +60,9 @@ int	main(void)
 		return (0); // ft_error();
 	if (!read_file("test_maps/42.fdf", data))
 		return (2);
-	data->zoom = 40;
 	draw(data);
 	mlx_loop_hook(data->mlx, deal_key, data);
 	mlx_loop(data->mlx);
-	// mlx_terminate(data->mlx);
+	mlx_terminate(data->mlx);
 	print_map(data);
 }

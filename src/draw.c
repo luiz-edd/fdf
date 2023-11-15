@@ -12,76 +12,98 @@
 
 #include "fdf.h"
 
-void	get_zoom(cordenates *aux, float zoom)
+void	get_zoom(fdf *data, point *p1, point *p2)
 {
-	aux->x *= zoom;
-	aux->y *= zoom;
-	aux->x1 *= zoom;
-	aux->y1 *= zoom;
+	p1->x *= data->zoom;
+	p1->y *= data->zoom;
+	p1->z *= data->zoom;
+	p2->x *= data->zoom;
+	p2->y *= data->zoom;
+	p2->z *= data->zoom;
 }
-// [3,5] [6,10]
 
-// void	make_3d(float *x, float *y, int z)
+// void	rotate_x(fdf *data, point *p1)
 // {
-// 	float	aux_x;
-// 	float	aux_y;
+// 	int	previous_y;
 
-// 	aux_x = *x;
-// 	aux_y = *y;
-// 	*x = (aux_x - aux_y) * cos(0.523599);
-// 	*y = (aux_x + aux_y) * sin(0.523599) - z;
+// 	previous_y = p1->y;
+// 	p1->y = previous_y * cos(data->x_angle) + p1->z * sin(data->x_angle);
+// 	p1->z = -previous_y * sin(data->x_angle) + p1->z * cos(data->x_angle);
 // }
 
-void	make_3d(cordenates *aux, int z, int z1, fdf *data)
+// static void	rotate_y(fdf *data, point *p1)
+// {
+// 	int	previous_x;
+
+// 	previous_x = p1->x;
+// 	p1->x = previous_x * cos(data->y_angle) + p1->z * sin(data->y_angle);
+// 	p1->z = -previous_x * sin(data->y_angle) + p1->z * cos(data->y_angle);
+// }
+
+// static void	rotate_z(fdf *data, point *p1)
+// {
+// 	int	previous_x;
+// 	int	previous_y;
+
+// 	previous_x = p1->x;
+// 	previous_y = p1->y;
+// 	p1->x = previous_x * cos(data->z_angle) - previous_y * sin(data->z_angle);
+// 	p1->y = previous_x * sin(data->z_angle) + previous_y * cos(data->z_angle);
+// }
+
+void	isometric(fdf *data, point *p1)
 {
 	float	x;
 	float	y;
-	float	x1;
-	float	y1;
+	int		z;
 
-	x = aux->x;
-	y = aux->y;
-	x1 = aux->x1;
-	y1 = aux->y1;
-	aux->x = (x - y) * cos(data->angle);
-	aux->y = (x + y) * sin(data->angle) - (z);
-	aux->x1 = (x1 - y1) * cos(data->angle);
-	aux->y1 = (x1 + y1) * sin(data->angle) - (z1);
+	x = p1->x;
+	y = p1->y;
+	z = data->matrix[(int)y][(int)x].z;
+	p1->x = (x - y) * cos(ISO_ANGLE);
+	p1->y = (x + y) * sin(ISO_ANGLE) - (z);
 }
 
-void	bresenham(fdf *data, point *p1, float x1, float y1)
+void	set_param(fdf *data, point *p1, point *p2)
+{
+	get_zoom(data, p1, p2);
+	rotate_z(data, p1);
+	rotate_z(data, p2);
+	rotate_x(data, p1);
+	rotate_x(data, p2);
+	rotate_y(data, p1);
+	rotate_y(data, p2);
+	centralize(data, p1, p2);
+	move(data, p1, p2);
+	// if (data->is_isometric == 0)
+	// {
+	// 	data->is_isometric = 1;
+	// 	isometric(data, p1);
+	// 	isometric(data, p2);
+	// }
+}
+
+void	bresenham(fdf *data, point p1, point p2)
 {
 	float			x_step;
 	float			y_step;
 	int				max;
 	unsigned int	color;
-	cordenates		cord;
 
-	cord.x = p1->x;
-	cord.y = p1->y;
-	cord.x1 = x1;
-	cord.y1 = y1;
 	//color
-	color = get_color(p1, &data->matrix[(int)cord.y1][(int)cord.x1]);
-	//3D
-	make_3d(&cord, p1->z, data->matrix[(int)cord.y1][(int)cord.x1].z, data);
-	//zoom
-	get_zoom(&cord, data->zoom);
-	//offset
-	centralize(data, &cord);
-	//move
-	move(data, &cord);
-	x_step = (cord.x1 - cord.x);
-	y_step = (cord.y1 - cord.y);
+	color = get_color(&p1, &p2);
+	set_param(data, &p1, &p2);
+	x_step = (p2.x - p1.x);
+	y_step = (p2.y - p1.y);
 	max = ft_maxval(ft_absolute(x_step), ft_absolute(y_step));
 	x_step /= max;
 	y_step /= max;
-	while ((int)(cord.x - cord.x1) || (int)(cord.y - cord.y1))
+	while ((int)(p1.x - p2.x) || (int)(p1.y - p2.y))
 	{
-		if ((cord.x > 0 && cord.x < WIDTH) && (cord.y > 0 && cord.y < HEIGHT))
-			mlx_put_pixel(data->image, cord.x, cord.y, color);
-		cord.x += x_step;
-		cord.y += y_step;
+		if ((p1.x > 0 && p1.x < WIDTH) && (p1.y > 0 && p1.y < HEIGHT))
+			mlx_put_pixel(data->image, p1.x, p1.y, color);
+		p1.x += x_step;
+		p1.y += y_step;
 	}
 }
 
@@ -98,62 +120,13 @@ void	draw(fdf *data)
 		while (x < data->width)
 		{
 			if (x < data->width - 1)
-				bresenham(data, &data->matrix[(int)y][(int)x], x + 1, y);
+				bresenham(data, data->matrix[(int)y][(int)x],
+						data->matrix[(int)y][(int)x + 1]);
 			if (y < data->height - 1)
-				bresenham(data, &data->matrix[(int)y][(int)x], x, y + 1);
+				bresenham(data, data->matrix[(int)y][(int)x],
+						data->matrix[(int)y + 1][(int)x]);
 			x++;
 		}
 		y++;
 	}
 }
-
-// void	bresenham_y(float x, float y, fdf *data, unsigned int color)
-// {
-// 	float	x_step;
-// 	float	y_step;
-// 	float	x1;
-// 	float	y1;
-// 	int		max;
-
-// 	x1 = x;
-// 	y1 = y + 1;
-// 	// print_cordinates(x, y, x1, y1);
-// 	get_zoom(&x, &y, data->zoom);
-// 	get_zoom(&x1, &y1, data->zoom);
-// 	x_step = (x1 - x);                        // 3
-// 	y_step = (y1 - y);                        // 5
-// 	max = maxval(sign(x_step), sign(y_step)); // 5
-// 	x_step /= max;                            //
-// 	y_step /= max;                            // -6/6 = -1;
-// 	while ((int)(x - x1) || (int)(y - y1))
-// 	{
-// 		mlx_put_pixel(data->image, x, y, color);
-// 		x += x_step;
-// 		y += y_step;
-// 	}
-// }
-
-// unsigned int	get_color_y(fdf *data, float x, float y)
-// {
-// 	float			x1;
-// 	float			y1;
-// 	unsigned int	color1;
-// 	unsigned int	color2;
-
-// 	x1 = x;
-// 	y1 = y + 1;
-// 	color1 = data->color_matrix[(int)y][(int)x];
-// 	color2 = data->color_matrix[(int)y1][(int)x1];
-// 	if (data->has_color)
-// 	{
-// 		if (color1 != 0xffffffff)
-// 			return (color1);
-// 		if (color2 != 0xffffffff)
-// 			return (color2);
-// 		return (color1);
-// 	}
-// 	if (data->z_matrix[(int)y][(int)x] != 0
-// 		|| data->z_matrix[(int)y1][(int)x1] != 0)
-// 		return (0xffff00ff);
-// 	return (color1);
-// }
