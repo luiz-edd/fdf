@@ -22,59 +22,79 @@ void	get_zoom(fdf *data, point *p1, point *p2)
 	p2->z *= data->zoom;
 }
 
-// void	rotate_x(fdf *data, point *p1)
-// {
-// 	int	previous_y;
-
-// 	previous_y = p1->y;
-// 	p1->y = previous_y * cos(data->x_angle) + p1->z * sin(data->x_angle);
-// 	p1->z = -previous_y * sin(data->x_angle) + p1->z * cos(data->x_angle);
-// }
-
-// static void	rotate_y(fdf *data, point *p1)
-// {
-// 	int	previous_x;
-
-// 	previous_x = p1->x;
-// 	p1->x = previous_x * cos(data->y_angle) + p1->z * sin(data->y_angle);
-// 	p1->z = -previous_x * sin(data->y_angle) + p1->z * cos(data->y_angle);
-// }
-
-// static void	rotate_z(fdf *data, point *p1)
-// {
-// 	int	previous_x;
-// 	int	previous_y;
-
-// 	previous_x = p1->x;
-// 	previous_y = p1->y;
-// 	p1->x = previous_x * cos(data->z_angle) - previous_y * sin(data->z_angle);
-// 	p1->y = previous_x * sin(data->z_angle) + previous_y * cos(data->z_angle);
-// }
-
-void	isometric(fdf *data, point *p1)
+void	rotate_x(fdf *data, point *p1)
 {
-	float	x;
-	float	y;
-	int		z;
+	float	previous_y;
 
-	x = p1->x;
-	y = p1->y;
-	z = data->matrix[(int)y][(int)x].z;
-	p1->x = (x - y) * cos(ISO_ANGLE);
-	p1->y = (x + y) * sin(ISO_ANGLE) - (z);
+	previous_y = p1->y;
+	p1->y = (previous_y * cos(data->x_angle * PI / 180 )) - (p1->z * sin(data->x_angle * PI / 180));
+	p1->z = (previous_y * sin(data->x_angle * PI / 180)) + (p1->z * cos(data->x_angle * PI / 180));
+}
+
+static void	rotate_y(fdf *data, point *p1)
+{
+	float	previous_x;
+
+	previous_x = p1->x;
+	p1->x = previous_x * cos(data->y_angle * PI / 180) + p1->z * sin(data->y_angle * PI / 180);
+	p1->z = -previous_x * sin(data->y_angle * PI / 180) + p1->z * cos(data->y_angle * PI / 180);
+}
+
+static void	rotate_z(fdf *data, point *p1)
+{
+	float	previous_x;
+	float	previous_y;
+
+	previous_x = p1->x;
+	previous_y = p1->y;
+	p1->x = previous_x * cos(data->z_angle * PI / 180) - previous_y * sin(data->z_angle * PI / 180);
+	p1->y = previous_x * sin(data->z_angle * PI / 180) + previous_y * cos(data->z_angle * PI / 180);
+}
+
+// void	isometric(fdf *data, point *p1)
+// {
+// 	float	x;
+// 	float	y;
+// 	int		z;
+
+// 	x = p1->x;
+// 	y = p1->y;
+// 	z = data->matrix[(int)y][(int)x].z;
+// 	p1->x = (x - y) * cos(ISO_ANGLE);
+// 	p1->y = (x + y) * sin(ISO_ANGLE) - (z);
+// }
+
+void	centralize(point *p1, point *p2)
+{
+	float	shift_x;
+	float	shift_y;
+
+	shift_y = (HEIGHT / 2);
+	shift_x = (WIDTH / 2);
+
+	p1->x += shift_x;
+	p1->y += shift_y;
+	p2->x += shift_x;
+	p2->y += shift_y;
 }
 
 void	set_param(fdf *data, point *p1, point *p2)
 {
 	get_zoom(data, p1, p2);
+	
 	rotate_z(data, p1);
 	rotate_z(data, p2);
+
 	rotate_x(data, p1);
 	rotate_x(data, p2);
+
 	rotate_y(data, p1);
 	rotate_y(data, p2);
-	centralize(data, p1, p2);
+
+	
+	centralize(p1, p2);
 	move(data, p1, p2);
+	
 	// if (data->is_isometric == 0)
 	// {
 	// 	data->is_isometric = 1;

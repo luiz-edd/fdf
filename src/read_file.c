@@ -104,9 +104,9 @@ void	create_matrix(fdf *data)
 	data->shift_x = 0;
 	data->shift_y = 0;
 
-	data->x_angle = 0;
+	data->x_angle = 54.7;
 	data->y_angle = 0;
-	data->z_angle = 0;
+	data->z_angle = -45;
 
 	data->is_isometric = 0;
 }

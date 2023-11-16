@@ -64,5 +64,5 @@ int	main(void)
 	mlx_loop_hook(data->mlx, deal_key, data);
 	mlx_loop(data->mlx);
 	mlx_terminate(data->mlx);
-	print_map(data);
+	// print_map(data);
 }

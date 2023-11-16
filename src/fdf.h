@@ -11,6 +11,9 @@
 # define HEIGHT 1080
 # define WHITE 0xffffffff
 # define ISO_ANGLE 0.523599
+# ifndef PI
+#  define PI 3.141592653
+# endif
 
 // typedef struct s_cordenates
 // {
@@ -55,7 +58,7 @@ int					read_file(char *file_name, fdf *data);
 void				bresenham(fdf *data, point p1, point p2);
 void				draw(fdf *data);
 unsigned int		get_color(point *p1, point *p2);
-void				centralize(fdf *data, point *p1, point *p2);
+void				centralize(point *p1, point *p2);
 void				deal_key(void *param);
 void				move(fdf *data, point *p1, point *p2);
 
