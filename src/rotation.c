@@ -13,55 +13,33 @@
 #include "fdf.h"
 
 
-
-void	deal_key(void *param)
+void	rotate_x(fdf *data, point *p1)
 {
-	fdf	*data;
+	float	previous_y;
 
-	// printf("test");
-	data = param;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
-		data->shift_y -= 10;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_S))
-		data->shift_y += 10;
-		
-	if (mlx_is_key_down(data->mlx, MLX_KEY_A))
-		data->shift_x -= 10;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_D))
-		data->shift_x += 10;
-
-
-	if (mlx_is_key_down(data->mlx, MLX_KEY_I))
-		data->x_angle += 7;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_K))
-		data->x_angle -= 7;
-
-	if (mlx_is_key_down(data->mlx, MLX_KEY_J))
-		data->y_angle += 7;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_L))
-		data->y_angle -= 7;
-	
-	if (mlx_is_key_down(data->mlx, MLX_KEY_O))
-		data->z_angle += 7;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_U))
-		data->z_angle -= 7;
-	
-	if (mlx_is_key_down(data->mlx, MLX_KEY_EQUAL))
-		data->zoom += 1;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_MINUS))
-		data->zoom -= 1;
-	
-	mlx_delete_image(data->mlx, data->image);
-	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
-	mlx_image_to_window(data->mlx, data->image, 0, 0);
-	draw(data);
+	previous_y = p1->y;
+	p1->y = (previous_y * cos(data->x_angle * PI / 180 )) - (p1->z * sin(data->x_angle * PI / 180));
+	p1->z = (previous_y * sin(data->x_angle * PI / 180)) + (p1->z * cos(data->x_angle * PI / 180));
 }
 
-void	move(fdf *data, point *p1, point *p2)
+void	rotate_y(fdf *data, point *p1)
 {
-	p1->x += data->shift_x;
-	p1->y += data->shift_y;
-	p2->x += data->shift_x;
-	p2->y += data->shift_y;
+	float	previous_x;
+
+	previous_x = p1->x;
+	p1->x = previous_x * cos(data->y_angle * PI / 180) + p1->z * sin(data->y_angle * PI / 180);
+	p1->z = -previous_x * sin(data->y_angle * PI / 180) + p1->z * cos(data->y_angle * PI / 180);
 }
+
+void	rotate_z(fdf *data, point *p1)
+{
+	float	previous_x;
+	float	previous_y;
+
+	previous_x = p1->x;
+	previous_y = p1->y;
+	p1->x = previous_x * cos(data->z_angle * PI / 180) - previous_y * sin(data->z_angle * PI / 180);
+	p1->y = previous_x * sin(data->z_angle * PI / 180) + previous_y * cos(data->z_angle * PI / 180);
+}
+
 

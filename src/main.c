@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <fcntl.h>
-#include <stdio.h>
-#include <unistd.h>
 
 int	print_map(fdf *data)
 {
@@ -58,7 +55,7 @@ int	main(void)
 	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (!data->image || (mlx_image_to_window(data->mlx, data->image, 0, 0) < 0))
 		return (0); // ft_error();
-	if (!read_file("test_maps/42.fdf", data))
+	if (!read_file("test_maps/pyramide.fdf", data))
 		return (2);
 	draw(data);
 	mlx_loop_hook(data->mlx, deal_key, data);

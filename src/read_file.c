@@ -72,7 +72,7 @@ void	fill_matrix(fdf *data, int y, char *line)
 	nums = ft_split(line, ' ');
 	while (i < data->width)
 	{
-		data->matrix[y][x].x = x - ((data->width) / 2 );
+		data->matrix[y][x].x = x - ((data->width) / 2);
 		data->matrix[y][x].y = y - (data->height / 2);
 		data->matrix[y][x].z = ft_atoi(nums[i]);
 		if ((ft_strchr(nums[i], 'x')) != NULL)
@@ -99,16 +99,13 @@ void	create_matrix(fdf *data)
 		data->matrix[i] = (point *)malloc(sizeof(point) * data->width);
 		i++;
 	}
-	data->zoom = 1;
-	
+	data->zoom = 1700/hypot((double)data->height, (double)data->width);
 	data->shift_x = 0;
 	data->shift_y = 0;
-
 	data->x_angle = 54.7;
 	data->y_angle = 0;
 	data->z_angle = -45;
-
-	data->is_isometric = 0;
+	// data->z_scale = 0;
 }
 
 int	read_file(char *file_name, fdf *data)
@@ -134,14 +131,3 @@ int	read_file(char *file_name, fdf *data)
 	data->matrix[y] = NULL;
 	return (1);
 }
-
-// unsigned int	add_transparency(char *color)
-// {
-// 	unsigned int	new_color;
-// 	unsigned int	mask;
-
-// 	mask = 2147483648;
-// 	new_color = ft_atoi_base(color, 16);
-// 	// return ((new_color & 0x00FFFFFF) | mask);
-// 	return ((new_color << 8) | 0xff);
-// }

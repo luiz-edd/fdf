@@ -15,16 +15,6 @@
 #  define PI 3.141592653
 # endif
 
-// typedef struct s_cordenates
-// {
-// 	float			x;
-// 	float			y;
-// 	float			x1;
-// 	float			y1;
-// 	int				z;
-// 	unsigned int	color;
-// }					cordenates;
-
 typedef struct s_point
 {
 	float			x;
@@ -37,38 +27,40 @@ typedef struct s_fdf
 {
 	int				width;
 	int				height;
-	int				is_isometric;
 	point			**matrix;
 	float			zoom;
 	float			shift_x;
 	float			shift_y;
-	float			z_scale;
+	// int				z_scale;
 	float			angle;
 	float			x_angle;
 	float			y_angle;
 	float			z_angle;
-
 	mlx_t			*mlx;
 	mlx_image_t		*image;
 
 }					fdf;
 
-//prototypes
+//read_file
 int					read_file(char *file_name, fdf *data);
+
+//draw
 void				bresenham(fdf *data, point p1, point p2);
 void				draw(fdf *data);
-unsigned int		get_color(point *p1, point *p2);
+
+//positioning
+void				get_zoom(fdf *data, point *p1, point *p2);
 void				centralize(point *p1, point *p2);
 void				deal_key(void *param);
 void				move(fdf *data, point *p1, point *p2);
+float				get_initial_zoom(fdf *data);
 
-// typedef struct mlx
-// {
-// 	void	*window;
-// 	void	*context;
-// 	int32_t	width;
-// 	int32_t	height;
-// 	double	delta_time;
-// }			mlx_t;
+//rotation
+void				rotate_x(fdf *data, point *p1);
+void				rotate_y(fdf *data, point *p1);
+void				rotate_z(fdf *data, point *p1);
+
+//color
+unsigned int		get_color(point *p1, point *p2);
 
 #endif
