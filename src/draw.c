@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.point                                             :+:      :+:    :+:   */
+/*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 14:10:36 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/31 15:12:59 by leduard2         ###   ########.fr       */
+/*   Created: 2023/11/17 19:19:03 by leduard2          #+#    #+#             */
+/*   Updated: 2023/11/17 19:24:27 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-// void	get_z(fdf *data, point *p1, point *p2)
-// {
-// 	if(data)
-// 	{	}
-// 	if (p1->z != 0)
-// 		p1->z += 10;
-// 	if (p2->z != 0)
-// 		p2->z += 10;
-// }
-
-void	set_param(fdf *data, point *p1, point *p2)
+void	get_z(t_fdf *data, t_point *p1, t_point *p2)
 {
-	// get_z(data, p1, p2);
+	if (p1->z != 0)
+		p1->z *= data->z_scale;
+	if (p2->z != 0)
+		p2->z *= data->z_scale;
+}
+
+void	set_param(t_fdf *data, t_point *p1, t_point *p2)
+{
 	get_zoom(data, p1, p2);
+	get_z(data, p1, p2);
 	rotate_z(data, p1);
 	rotate_z(data, p2);
 	rotate_x(data, p1);
@@ -36,7 +34,7 @@ void	set_param(fdf *data, point *p1, point *p2)
 	move(data, p1, p2);
 }
 
-void	bresenham(fdf *data, point p1, point p2)
+void	bresenham(t_fdf *data, t_point p1, t_point p2)
 {
 	float			x_step;
 	float			y_step;
@@ -59,7 +57,7 @@ void	bresenham(fdf *data, point p1, point p2)
 	}
 }
 
-void	draw(fdf *data)
+void	draw(t_fdf *data)
 {
 	float	x;
 	float	y;
@@ -73,10 +71,10 @@ void	draw(fdf *data)
 		{
 			if (x < data->width - 1)
 				bresenham(data, data->matrix[(int)y][(int)x],
-						data->matrix[(int)y][(int)x + 1]);
+					data->matrix[(int)y][(int)x + 1]);
 			if (y < data->height - 1)
 				bresenham(data, data->matrix[(int)y][(int)x],
-						data->matrix[(int)y + 1][(int)x]);
+					data->matrix[(int)y + 1][(int)x]);
 			x++;
 		}
 		y++;

@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.point                                            :+:      :+:    :+:   */
+/*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 11:43:54 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/30 13:23:34 by leduard2         ###   ########.fr       */
+/*   Created: 2023/11/17 19:18:00 by leduard2          #+#    #+#             */
+/*   Updated: 2023/11/17 19:22:24 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-unsigned int	get_color(point *p1, point *p2)
+unsigned int	get_color(t_point *p1, t_point *p2)
 {
-	unsigned int color;
-	unsigned int color1;
+	unsigned int	color;
+	unsigned int	color1;
 
 	color = p1->color;
 	color1 = p2->color;
-
 	if (color != 0)
 		return (color);
 	if (color1 != 0)

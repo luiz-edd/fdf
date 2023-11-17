@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_file.point                                        :+:      :+:    :+:   */
+/*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/21 13:43:34 by leduard2          #+#    #+#             */
-/*   Updated: 2023/10/31 14:09:06 by leduard2         ###   ########.fr       */
+/*   Created: 2023/11/17 19:20:05 by leduard2          #+#    #+#             */
+/*   Updated: 2023/11/17 19:25:48 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	update_height_width(char *file_name, int *heigh, int *width)
 	return (1);
 }
 
-void	fill_matrix(fdf *data, int y, char *line)
+void	fill_matrix(t_fdf *data, int y, char *line)
 {
 	int		i;
 	char	**nums;
@@ -88,27 +88,27 @@ void	fill_matrix(fdf *data, int y, char *line)
 	ft_freepp(nums);
 }
 
-void	create_matrix(fdf *data)
+void	create_matrix(t_fdf *data)
 {
 	int	i;
 
 	i = 0;
-	data->matrix = (point **)malloc(sizeof(point *) * data->height + 1);
+	data->matrix = (t_point **)malloc(sizeof(t_point *) * data->height + 1);
 	while (i < data->height)
 	{
-		data->matrix[i] = (point *)malloc(sizeof(point) * data->width);
+		data->matrix[i] = (t_point *)malloc(sizeof(t_point) * data->width);
 		i++;
 	}
-	data->zoom = 1700/hypot((double)data->height, (double)data->width);
+	data->zoom = 1700 / hypot((double)data->height, (double)data->width);
 	data->shift_x = 0;
 	data->shift_y = 0;
 	data->x_angle = 54.7;
 	data->y_angle = 0;
 	data->z_angle = -45;
-	// data->z_scale = 0;
+	data->z_scale = 1;
 }
 
-int	read_file(char *file_name, fdf *data)
+int	read_file(char *file_name, t_fdf *data)
 {
 	int		y;
 	char	*line;

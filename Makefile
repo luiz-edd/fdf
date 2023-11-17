@@ -11,7 +11,7 @@ PATH_LIBFT = lib/libft/
 PATH_TO_SRC = src/
 PATH_TO_OBJ = obj/
 
-SRC = read_file.c main.c draw.c color.c rotation.c positioning.c
+SRC = read_file.c main.c draw.c color.c rotation.c positioning.c control.c
 OBJ = $(SRC:.c=.o)
 
 SRC_PATH = $(addprefix $(PATH_TO_SRC), $(SRC))
