@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 19:20:05 by leduard2          #+#    #+#             */
-/*   Updated: 2023/11/17 19:25:48 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:38:21 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,10 @@ void	create_matrix(t_fdf *data)
 	int	i;
 
 	i = 0;
-	data->matrix = (t_point **)malloc(sizeof(t_point *) * data->height + 1);
+	data->matrix = (t_point **)ft_calloc(sizeof(t_point *) , data->height + 1);
 	while (i < data->height)
 	{
-		data->matrix[i] = (t_point *)malloc(sizeof(t_point) * data->width);
+		data->matrix[i] = (t_point *)ft_calloc(sizeof(t_point) , data->width);
 		i++;
 	}
 	data->zoom = 1700 / hypot((double)data->height, (double)data->width);

@@ -1,5 +1,6 @@
 NAME = fdf
 CC = cc -Wall -Wextra -Werror -g -O0 -Wunreachable-code
+LEAKS = valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all --suppressions=./libraries/MLX42/suppress.sup
 
 LIBMLX = ./lib/MLX42
 

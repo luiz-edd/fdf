@@ -28,6 +28,7 @@
 		"streambuf": "c",
 		"tuple": "c",
 		"utility": "c",
-		"random": "c"
+		"random": "c",
+		"algorithm": "c"
 	}
 }
