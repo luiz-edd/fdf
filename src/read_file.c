@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 19:20:05 by leduard2          #+#    #+#             */
-/*   Updated: 2023/11/21 15:38:21 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:07:06 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	update_height_width(char *file_name, int *heigh, int *width)
 		if (aux_width != *width)
 		{
 			get_next_line(-1);
-			printf("MAP ERROR\n");
+			ft_printf("MAP ERROR\n");
 			return (0);
 		}
 		line = get_next_line(fd);
@@ -93,10 +93,10 @@ void	create_matrix(t_fdf *data)
 	int	i;
 
 	i = 0;
-	data->matrix = (t_point **)ft_calloc(sizeof(t_point *) , data->height + 1);
+	data->matrix = (t_point **)ft_calloc(sizeof(t_point *), data->height + 1);
 	while (i < data->height)
 	{
-		data->matrix[i] = (t_point *)ft_calloc(sizeof(t_point) , data->width);
+		data->matrix[i] = (t_point *)ft_calloc(sizeof(t_point), data->width);
 		i++;
 	}
 	data->zoom = 1700 / hypot((double)data->height, (double)data->width);
@@ -115,10 +115,16 @@ int	read_file(char *file_name, t_fdf *data)
 	int		fd;
 
 	y = 0;
+	fd = open(file_name, O_RDONLY);
+	if (fd < 1)
+	{
+		ft_printf("MAP NOT FOUND\n");
+		return (0);
+	}
 	if (!update_height_width(file_name, &data->height, &data->width))
 		return (0);
 	create_matrix(data);
-	fd = open(file_name, O_RDONLY);
+	
 	line = get_next_line(fd);
 	while (y < data->height)
 	{

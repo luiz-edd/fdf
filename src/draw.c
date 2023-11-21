@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 19:19:03 by leduard2          #+#    #+#             */
-/*   Updated: 2023/11/21 17:15:17 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:07:59 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	set_param(t_fdf *data, t_point *p1, t_point *p2)
 	move(data, p1, p2);
 }
 
-void	bresenham(t_fdf *data, t_point p1, t_point p2)
+void	draw_line(t_fdf *data, t_point p1, t_point p2)
 {
 	float			x_step;
 	float			y_step;
@@ -70,10 +70,10 @@ void	draw(t_fdf *data)
 		while (x < data->width)
 		{
 			if (x < data->width - 1)
-				bresenham(data, data->matrix[(int)y][(int)x],
+				draw_line(data, data->matrix[(int)y][(int)x],
 					data->matrix[(int)y][(int)x + 1]);
 			if (y < data->height - 1)
-				bresenham(data, data->matrix[(int)y][(int)x],
+				draw_line(data, data->matrix[(int)y][(int)x],
 					data->matrix[(int)y + 1][(int)x]);
 			x++;
 		}

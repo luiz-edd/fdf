@@ -1,6 +1,6 @@
 NAME = fdf
 CC = cc -Wall -Wextra -Werror -g -O0 -Wunreachable-code
-LEAKS = valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all --suppressions=./libraries/MLX42/suppress.sup
+LEAKS = valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all --suppressions=suppress.sup
 
 LIBMLX = ./lib/MLX42
 
@@ -41,5 +41,9 @@ fclean: clean
 	@make -C $(PATH_LIBFT) fclean
 
 re: fclean all
+
+leak: all
+	$(LEAKS) ./$(NAME) "test_maps/42.fdf" 
+
 
 .PHONY: all clean fclean re
