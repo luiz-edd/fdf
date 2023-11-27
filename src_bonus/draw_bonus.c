@@ -6,11 +6,11 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 19:19:03 by leduard2          #+#    #+#             */
-/*   Updated: 2023/11/23 15:47:49 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:07:59 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "fdf_bonus.h"
 
 void	get_z(t_fdf *data, t_point *p1, t_point *p2)
 {

@@ -6,11 +6,11 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 19:27:27 by leduard2          #+#    #+#             */
-/*   Updated: 2023/11/23 15:47:27 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/11/21 19:44:08 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "fdf_bonus.h"
 
 int	print_map(t_fdf *data)
 {
@@ -66,7 +66,7 @@ int	main(int argc, char **argv)
 	if (!data->image || (mlx_image_to_window(data->mlx, data->image, 0, 0) < 0))
 		return (free_and_error(data, "image error"));
 	if (!read_file(argv[1], data))
-		return (free_and_error(data, ""));
+		return (free_and_error(data, "entrou"));
 	draw(data);
 	mlx_loop_hook(data->mlx, deal_key, data);
 	mlx_loop(data->mlx);
