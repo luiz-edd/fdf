@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_file.c                                        :+:      :+:    :+:   */
+/*   read_file_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 19:20:05 by leduard2          #+#    #+#             */
-/*   Updated: 2023/11/21 18:07:06 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:59:49 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ int	read_file(char *file_name, t_fdf *data)
 	if (!update_height_width(file_name, &data->height, &data->width))
 		return (0);
 	create_matrix(data);
-	
 	line = get_next_line(fd);
 	while (y < data->height)
 	{

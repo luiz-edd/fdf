@@ -6,7 +6,7 @@
 /*   By: leduard2 <leduard2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 19:00:30 by leduard2          #+#    #+#             */
-/*   Updated: 2023/11/27 19:41:48 by leduard2         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:57:48 by leduard2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ void	deal_key(void *param)
 	t_fdf	*data;
 
 	data = param;
-	// basic_movement_control(data);
-	// rotation_control(data);
-	// scale_control(data);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(data->mlx);
 	mlx_delete_image(data->mlx, data->image);

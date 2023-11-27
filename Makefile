@@ -41,7 +41,7 @@ $(PATH_TO_OBJ)%.o: $(PATH_TO_SRC)%.c
 	make -C $(PATH_LIBFT) all	
 	$(CC) $< -o $@ -c $(HEADER) 
 
-bonus: libmlx libft $(BONUS_NAME)
+bonus: libmlx $(BONUS_NAME)
 
 $(BONUS_NAME): $(OBJ_BONUS_PATH)
 	$(CC) $(OBJ_BONUS_PATH) $(LIBFT) $(LIBS) $(HEADER) -o $(BONUS_NAME)
@@ -67,5 +67,10 @@ re: fclean all
 leak: all
 	$(LEAKS) ./$(NAME) "test_maps/42.fdf" 
 
+leak_bonus: all
+	$(LEAKS) ./$(BONUS_NAME) "test_maps/42.fdf" 
+
+normi:
+	norminette src/* src_bonus/* lib/libft/src/*
 
 .PHONY: all clean fclean re
