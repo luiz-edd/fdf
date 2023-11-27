@@ -1,4 +1,5 @@
 NAME = fdf
+BONUS_NAME = fdf_bonus
 CC = cc -Wall -Wextra -Werror -g -O0 -Wunreachable-code
 LEAKS = valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all --suppressions=suppress.sup
 
@@ -29,7 +30,6 @@ OBJ_BONUS_PATH = $(addprefix $(PATH_TO_OBJ_BONUS), $(OBJ_BONUS))
 
 all: libmlx $(NAME)
 
-
 libmlx:
 	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
 
@@ -41,7 +41,10 @@ $(PATH_TO_OBJ)%.o: $(PATH_TO_SRC)%.c
 	make -C $(PATH_LIBFT) all	
 	$(CC) $< -o $@ -c $(HEADER) 
 
-bonus: $(OBJ_BONUS_PATH)
+bonus: libmlx libft $(BONUS_NAME)
+
+$(BONUS_NAME): $(OBJ_BONUS_PATH)
+	$(CC) $(OBJ_BONUS_PATH) $(LIBFT) $(LIBS) $(HEADER) -o $(BONUS_NAME)
 
 $(PATH_TO_OBJ_BONUS)%.o: $(PATH_TO_SRC_BONUS)%.c
 	mkdir -p $(PATH_TO_OBJ_BONUS)
@@ -50,11 +53,13 @@ $(PATH_TO_OBJ_BONUS)%.o: $(PATH_TO_SRC_BONUS)%.c
 
 clean:
 	@rm -rf obj
+	@rm -rf obj_bonus
 	@rm -rf $(LIBMLX)/build
 	@make -C $(PATH_LIBFT) clean
 
 fclean: clean
 	@rm -rf $(NAME)
+	@rm -rf $(BONUS_NAME)
 	@make -C $(PATH_LIBFT) fclean
 
 re: fclean all
