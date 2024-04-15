@@ -34,12 +34,10 @@ int	get_width(char *line)
 
 int	update_height_width(char *file_name, int *heigh, int *width)
 {
-	int		i;
 	int		fd;
 	char	*line;
 	int		aux_width;
 
-	i = 0;
 	fd = open(file_name, O_RDONLY);
 	line = get_next_line(fd);
 	*heigh = 0;
